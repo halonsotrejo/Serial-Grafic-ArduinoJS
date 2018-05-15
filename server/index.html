@@ -10,26 +10,25 @@
 </head>
 <body>
 
-    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <canvas id="myCanvas"></canvas>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js" charset="utf-8"></script>
     <script>
         const socket = io();
 
         let counter = 0;
         socket.on('arduino:data', function(dataSerial){
-            console.log(data);
-            myChart.data.labels.push(counter);
-            myChart.data.datasets.array.forEach(dataset => {
-                dataset.data.push(dataSerial.value);
+            myCanvas.data.labels.push(counter);
+            myCanvas.data.datasets.array.forEach(dataset => {
+            dataset.data.push(dataSerial.value);
             });
             counter++;
-            myChart.update();
+            myCanvas.update();
         });
 
             var ctx = document.getElementById("myCanvas").getContext('2d');
-            var myChart = new Chart(ctx, {
+            var myCanvas = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: ["Serial"],
@@ -37,17 +36,10 @@
                 label: 'Serial',
                 backgroundColor: 'rgb(52,73,94)',
                 borderColor: 'rgb(41,128,94)',
-                data: [],
+                data: []
             }]
         },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
+        options: {   
         }
     });
         </script>
