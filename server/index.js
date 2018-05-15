@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const io = socketIO.listen(server);
 
 io.on('connection', function(socket){
-    Console.log('nuevo socket conectado');
+    console.log('nuevo socket conectado');
 });
 
 app.get('/', (req, res, next) => {
@@ -24,18 +24,18 @@ const mySerial = new SerialPort('COM8',{
     baudRate: 9600
 });
 
-mySerial.open('open', function(){
+mySerial.on('open', function(){
     console.log('Puerto abierto');
 });
 
-mySerial.open('data', function(data){
-    //console.log(data.toString);
+mySerial.on('data', function(data){
+    console.log(data.toString());
     io.emit('arduino:data',{
         value: data.toString()
     });
 });
 
-mySerial.open('error', function(error){
+mySerial.on('error', function(error){
     console.log(error.message);
 });
 

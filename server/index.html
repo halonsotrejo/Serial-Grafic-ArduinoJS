@@ -2,45 +2,43 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Comunicacion Serial</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    <title>NodeSerial</title>
 </head>
 <body>
 
     <canvas id="myCanvas"></canvas>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+
     <script>
         const socket = io();
 
         let counter = 0;
         socket.on('arduino:data', function(dataSerial){
-            myCanvas.data.labels.push(counter);
-            myCanvas.data.datasets.array.forEach(dataset => {
-            dataset.data.push(dataSerial.value);
-            });
+            console.log(dataSerial);
+            myChart.data.labels.push(counter);
+            myChart.data.datasets.forEach(dataset =>{
+				dataset.data.push(dataSerial.value);
+			});
+
             counter++;
-            myCanvas.update();
+            myChart.update();
         });
 
             var ctx = document.getElementById("myCanvas").getContext('2d');
-            var myCanvas = new Chart(ctx, {
+            var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: ["Serial"],
             datasets: [{
-                label: 'Serial',
-                backgroundColor: 'rgb(52,73,94)',
-                borderColor: 'rgb(41,128,94)',
+                label: "Serial",
+                backgroundColor: 'rgba(52,73,94)',
+                borderColor: 'rgba(41,128,185)',
                 data: []
             }]
         },
-        options: {   
-        }
+        options: {   }
     });
         </script>
 </body>
